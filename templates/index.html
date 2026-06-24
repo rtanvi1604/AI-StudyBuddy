@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Study Buddy</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- ==========================================
+       HEADER / NAVBAR
+  =========================================== -->
+  <header class="header">
+    <div class="header-inner">
+      <!-- Logo -->
+      <div class="logo">
+        <span class="logo-icon">🎓</span>
+        <span class="logo-text">AI Study Buddy</span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="showSection('upload')">📤 Upload</button>
+        <button class="tab-btn" onclick="showSection('chat')">💬 Chat</button>
+        <button class="tab-btn" onclick="showSection('summary')">📝 Summary</button>
+        <button class="tab-btn" onclick="showSection('quiz')">🧠 Quiz</button>
+        <button class="tab-btn" onclick="showSection('flashcards')">🃏 Flashcards</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MAIN CONTENT
+  =========================================== -->
+  <main class="main">
+
+    <!-- ----------------------------------------
+         SECTION 1: UPLOAD PDF
+    ----------------------------------------- -->
+    <section id="upload" class="section active">
+      <div class="section-header">
+        <h2>📤 Upload Your Notes</h2>
+        <p>Upload a PDF file to get started. The AI will process and index your notes.</p>
+      </div>
+
+      <!-- Upload Box -->
+      <div class="upload-box" id="uploadBox"
+           onclick="document.getElementById('fileInput').click()"
+           ondragover="handleDragOver(event)"
+           ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)">
+        <div class="upload-icon">📄</div>
+        <p class="upload-title">Click to upload or drag & drop</p>
+        <p class="upload-subtitle">PDF files only · Max 20MB</p>
+        <input type="file" id="fileInput" accept=".pdf" hidden onchange="handleFileSelect(event)" />
+      </div>
+
+      <!-- Selected File Info -->
+      <div class="file-info" id="fileInfo" style="display:none;">
+        <span class="file-icon">📄</span>
+        <span class="file-name" id="fileName"></span>
+        <button class="btn-small btn-danger" onclick="clearFile()">✕ Remove</button>
+      </div>
+
+      <!-- Upload Button -->
+      <button class="btn-primary" id="uploadBtn" onclick="uploadPDF()" style="display:none;">
+        ⚡ Process PDF
+      </button>
+
+      <!-- Status Messages -->
+      <div class="status-box success" id="uploadSuccess" style="display:none;"></div>
+      <div class="status-box error"   id="uploadError"   style="display:none;"></div>
+
+      <!-- Loading -->
+      <div class="loader" id="uploadLoader" style="display:none;">
+        <div class="spinner"></div>
+        <p>Processing your PDF... this may take a moment.</p>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">🔍</div>
+          <h4>Smart Extraction</h4>
+          <p>Text is extracted from every page of your PDF.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🧩</div>
+          <h4>Intelligent Chunking</h4>
+          <p>Notes are split into smart overlapping chunks.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">⚡</div>
+          <h4>Vector Search</h4>
+          <p>Embeddings stored in FAISS for fast retrieval.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ----------------------------------------
+         SECTION 2: CHAT
+    ----------------------------------------- -->
+    <section id="chat" class="section">
+      <div class="section-header">
+        <h2>💬 Chat with Your Notes</h2>
+        <p>Ask any question. The AI will answer using only your uploaded notes.</p>
+      </div>
+
+      <!-- Chat Messages Window -->
+      <div class="chat-window" id="chatWindow">
+        <!-- Welcome message -->
+        <div class="chat-message bot">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-bubble">
+            Hello! Upload your PDF notes and ask me anything about them.
+            I will only answer based on what's in your notes.
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="chat-input-row">
+        <input
+          type="text"
+          id="chatInput"
+          class="chat-input"
+          placeholder="Ask a question about your notes..."
+          onkeydown="if(event.key==='Enter') sendMessage()"
+        />
+        <button class="btn-primary" onclick="sendMessage()">Send ➤</button>
+      </div>
+
+      <!-- Chat Loader -->
+      <div class="loader" id="chatLoader" style="display:none;">
+        <div class="spinner"></div>
+        <p>IBM Granite is thinking...</p>
+      </div>
+    </section>
+
+
+    <!-- ----------------------------------------
+         SECTION 3: SUMMARY
+    ----------------------------------------- -->
+    <section id="summary" class="section">
+      <div class="section-header">
+        <h2>📝 AI Summary</h2>
+        <p>Generate a concise summary of your uploaded notes.</p>
+      </div>
+
+      <button class="btn-primary" onclick="generateSummary()">
+        ✨ Generate Summary
+      </button>
+
+      <!-- Summary Loader -->
+      <div class="loader" id="summaryLoader" style="display:none;">
+        <div class="spinner"></div>
+        <p>Generating summary with IBM Granite...</p>
+      </div>
+
+      <!-- Summary Output -->
+      <div class="output-box" id="summaryOutput" style="display:none;">
+        <div class="output-header">
+          <span>📝 Summary</span>
+          <button class="btn-small" onclick="copyText('summaryText')">📋 Copy</button>
+        </div>
+        <div class="output-content" id="summaryText"></div>
+      </div>
+
+      <!-- Error -->
+      <div class="status-box error" id="summaryError" style="display:none;"></div>
+    </section>
+
+
+    <!-- ----------------------------------------
+         SECTION 4: QUIZ
+    ----------------------------------------- -->
+    <section id="quiz" class="section">
+      <div class="section-header">
+        <h2>🧠 Quiz Generator</h2>
+        <p>Test your knowledge with 5 AI-generated multiple-choice questions.</p>
+      </div>
+
+      <button class="btn-primary" onclick="generateQuiz()">
+        🎯 Generate Quiz
+      </button>
+
+      <!-- Quiz Loader -->
+      <div class="loader" id="quizLoader" style="display:none;">
+        <div class="spinner"></div>
+        <p>Generating quiz questions...</p>
+      </div>
+
+      <!-- Quiz Output -->
+      <div id="quizOutput" style="display:none;"></div>
+
+      <!-- Quiz Score -->
+      <div class="score-box" id="scoreBox" style="display:none;">
+        <h3>Your Score: <span id="scoreText"></span></h3>
+        <button class="btn-primary" onclick="generateQuiz()">🔄 Try Again</button>
+      </div>
+
+      <!-- Error -->
+      <div class="status-box error" id="quizError" style="display:none;"></div>
+    </section>
+
+
+    <!-- ----------------------------------------
+         SECTION 5: FLASHCARDS
+    ----------------------------------------- -->
+    <section id="flashcards" class="section">
+      <div class="section-header">
+        <h2>🃏 Flashcard Generator</h2>
+        <p>Study key concepts with AI-generated flashcards. Click a card to reveal the answer.</p>
+      </div>
+
+      <button class="btn-primary" onclick="generateFlashcards()">
+        🃏 Generate Flashcards
+      </button>
+
+      <!-- Flashcard Loader -->
+      <div class="loader" id="flashcardsLoader" style="display:none;">
+        <div class="spinner"></div>
+        <p>Generating flashcards...</p>
+      </div>
+
+      <!-- Flashcards Grid -->
+      <div class="flashcards-grid" id="flashcardsOutput"></div>
+
+      <!-- Error -->
+      <div class="status-box error" id="flashcardsError" style="display:none;"></div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       FOOTER
+  =========================================== -->
+  <footer class="footer">
+    <p>🎓 AI Study Buddy &nbsp;·&nbsp; Powered by IBM Granite &nbsp;·&nbsp; Built for IBM SkillsBuild Internship</p>
+  </footer>
+
+  <!-- Link JavaScript -->
+  <script src="/static/script.js"></script>
+
+</body>
+</html>

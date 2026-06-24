@@ -1,0 +1,30 @@
+# Secret credentials — NEVER upload this
+.env
+
+# Uploaded PDF files
+uploads/
+
+# FAISS vector store (generated automatically)
+vectorstore/
+
+# Python virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Log files
+*.log
