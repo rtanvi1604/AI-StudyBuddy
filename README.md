@@ -132,35 +132,35 @@ AI-StudyBuddy/
 
 PDF Upload
 
-↓
+    ↓
 
 Text Extraction (PyMuPDF)
 
-↓
+    ↓
 
 Chunking (500 words, 50-word overlap)
 
-↓
+    ↓
 
 Embedding Generation (Sentence-Transformers)
 
-↓
+    ↓
 
 FAISS Vector Store
 
-↓
+    ↓
 
 User Question
 
-↓
+    ↓
 
 Similarity Search (top-4 chunks)
 
-↓
+    ↓
 
 RAG Prompt → IBM Granite
 
-↓
+    ↓
 
 Grounded Answer
 
