@@ -166,6 +166,31 @@ Grounded Answer
 
 ---
 
+## 📸 Application Snapshots
+
+### AI Study Buddy - Dashboard
+![Dashboard](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/1_DASHBOARD.png)
+
+### ChatBot for Interactive session
+![Chatbot](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/2_CHATBOT.png)
+
+### Overall Summary of the Uploaded Notes
+![Summary](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/3_SUMMARY.png)
+
+### Quiz Section
+![Quiz_1](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/4_QUIZ1.png)
+
+![Quiz_2](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/4_QUIZ2.png)
+
+![Quiz_3](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/4_QUIZ3.png)
+
+### Flashcards
+![Flashcard_1](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/5_FLASHCARDS1.png)
+
+![Flashcard_2](https://github.com/rtanvi1604/AI-StudyBuddy/blob/main/5_FLASHCARDS2.png)
+
+---
+
 ## 👩‍💻 Developed By
 
 **Tanvi R**
